@@ -14,12 +14,18 @@ app.route('/login')
   // process the form (POST http://localhost:PORT/login)
     .post(function(req, res) { console.log('processing');
     res.send('processing the login form!');
+	
+	var output = 'processing the login form...';
+	var input1 = req.query.input1;
+	var input2 = req.query.input2;
+	console.log('The params:' + req.query.input1 + " " + req.query.input2);
   });
 
 // send our index.html file to the user for the home page
 app.get('/', function(req, res) {
      res.sendFile(__dirname + '/myWebPage.html');
 });
+
 
 ///////////////////////////////////////////////////////////////////
 // create routes for the admin section
@@ -66,3 +72,23 @@ app.use('/admin', adminRouter);
 app.listen(PORT);
 console.log('Express Server running at http://127.0.0.1:'.PORT);
 ///////////////////////////////////////////////////////////////////
+ 
+ 
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb://127.0.0.1:27017";
+MongoClient.connect(uri, function (err, db) {
+ if(err) throw err;
+ console.log('Start the database stuff');
+ //Write databse Insert/Update/Query code here..
+ console.log('Start the database stuff');
+ var dbo = db.db("mydb");
+ var myobj =  { firstInput: "user1", secondInput: "user1again" };
+ dbo.collection("users").insertOne(myobj, function(err, res){
+	 if(err) throw err;
+	 console.log("1 user inserted");
+	 db.close();
+ });
+ console.log('End the database stuff');
+ });
+
+ 

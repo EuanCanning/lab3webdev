@@ -1,36 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
+<html>
+	<head>
+		<title>Just Some User Input</title>
+	</head>
+	<body onload="makeRequest();">
 
-<div class="jumbotron text-center">
-  <h1>Pam's Second Amazing Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p>
-</div>
+<script>
+  	var req;
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Column 1</h3>
-      <p>Totes amazeballs</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor..</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 3</h3>
-      <p>Lorem ipsum dolor..</p>
-    </div>
-  </div>
-</div>
+	function makeRequest() {
+    if (window.XMLHttpRequest) {
+        req = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        req = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    else {
+    	// Ajax not supported
+			return;
+    }
 
+		req.onreadystatechange = function() {
+		var txt = "";
+    if (this.readyState == 4 && this.status == 200) {
+			var response = this.responseText;
+			console.log (response);
+     document.getElementById("answer").innerHTML = response;
+    }
+	};
+
+}
+
+	function doStuff() {
+		input1 = document.getElementById ("input1").value;
+		input2 = document.getElementById ("input2").value;
+
+	  req.open("GET", "/login?input1=" + input1 + "&input2=" + input2, true);
+		req.send();
+		//var params = 'input1=' + input1 + '&input2=' + input2;
+		//req.open('POST', '/login?', true);
+		//req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		//req.send(params);
+
+	}
+</script>
+
+<p>Input 1: <input type = "text" id = "input1"></input></p>
+<p>Input 2: <input type = "text" id = "input2"></input></p>
+
+
+<h1>Response</h1>
+
+<p id="answer">Server response will go here</p>
+
+<input type = "button" value = "Do it!" onclick = "doStuff();" />
 </body>
 </html>
